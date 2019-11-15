@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Starlytics</title>
+
+        {% load static %}
+        <!-- Bootstrap core CSS -->
+        <link href="{% static "starlytics/bootstrap.min.css" %}" rel="stylesheet">
+        <!-- Bootstrap theme -->
+        <link href="{% static "starlytics/bootstrap-theme.min.css" %}" rel="stylesheet">
+        <!-- jquery -->
+        <script src="{% static "starlytics/jquery-3.3.1.min.js" %}"></script>
+        <!-- rangeslider -->
+        <script src="{% static "starlytics/rangeslider.min.js" %}"></script>
+
+
+        <style>
+
+            #navbar ul {
+                margin: 0;
+                padding: 5px;
+                list-style-type: none;
+                text-align: center;
+                background-color: #273863;
+            }
+
+            #navbar ul li {
+                display: inline;
+            }
+
+            #navbar ul li label {
+                text-decoration: none;
+                padding: .2em 1em;
+                color: #fff;
+                background-color: #273863;
+            }
+
+            #navbar ul li label:hover {
+                color: #000;
+                background-color: #fff;
+            }
+            .slidecontainer {
+            width: 100%;
+            }
+
+            .slider {
+                -webkit-appearance: none;
+                width: 100%;
+                height: 15px;
+                border-radius: 5px;
+                background: #d3d3d3;
+                outline: none;
+                opacity: 0.7;
+                -webkit-transition: .2s;
+                transition: opacity .2s;
+            }
+
+            .slider:hover {
+                opacity: 1;
+            }
+
+            .slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                background: #273863;
+                cursor: pointer;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                background: #273863;
+                cursor: pointer;
+            }
+            a:link, a:visited {
+                background-color: #273863; /* Green */
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+            }
+            .button {
+                background-color: #273863; /* Dark BlueGrey */
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+            }
+            .button:hover{
+                box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+            }
+            a:hover, a:active {
+                box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+            }
+
+            .column {
+                float: left;
+                width: 50%;
+                padding: 10px;
+                background-color: #90A3D4;
+                height: 250px; /* Should be removed. Only for demonstration */
+                padding-bottom: 15px;
+            }
+            .column1 {
+                float: left;
+                width: 65%;
+                padding:10px;
+            }
+
+            .column2 {
+                float: left;
+                width: 35%;
+                padding:10px;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+
+
+        </style>
+
+    </head>
+    <body>
+
+
+    <div id="navbar">
+        <ul>
+
+            <a href="https://fontmeme.com/starcraft-font/"><img src="https://fontmeme.com/permalink/180424/fc4c5669bcf25e97c56f533edcd05fca.png" alt="starcraft-font" border="0"></a>
+
+        </ul>
+    </div>
+
+    <div style="margin: 15px">
+    <div style="padding: 15px">
+        <label style="font-size: 20px; padding-left: 20px">Instructions for uploading the files</label>
+        <ul>
+            <li>Upload a replay file and global spacial vector for the same replay</li>
+            <li>Either upload a file and click upload or enter a file number and click load file</li>
+        </ul>
+    </div>
+
+    <div class="row" style="padding-top: 20px">
+        <div class="column" style="">
+            <h3 style="padding-left: 400px" >Choose file for upload</h3><br>
+            <form method="post" style="padding-left: 400px" action="{% url 'get_image' %}" enctype="multipart/form-data"> {% csrf_token %}
+                <input style="display: inline-block" type="file" name="files" multiple/><br><br>
+                <input class="button" type="submit" value="Upload"/>
+            </form>
+        </div>
+
+        <div class="column" style="">
+
+            <h3  style="float: left;">Enter a file number</h3><br><br>
+            <form style="width: 100%; float: left; padding-top: 10px" id="getfile" method="POST" action="{% url 'get_image' %}">
+                {% csrf_token %}
+                File Number: <input style="display: block" type="number" name="file" value = {{filenumber}}>
+            </form><br><br>
+            <p style="float: left;"><a href="#" onclick="document.getElementById('getfile').submit();return false;">Load File</a></p>
+
+        </div>
+    </div>
+
+    <!--
+        <div style=" justify-content: center; padding-left: 0%; display: inline-block ">
+            <form method="post" style="margin-left: 5em" action="{% url 'get_image' %}" enctype="multipart/form-data"> {% csrf_token %}
+                <input style="display: inline-block" type="file" name="files" multiple/><br><br>
+                <input class="button" type="submit" value="Upload"/>
+            </form>
+        </div>
+        <div style="justify-content: center; display: inline-block">
+            <form style="width: 50%; float: left; display: inline-block" id="getfile" method="POST" action="{% url 'get_image' %}">
+                {% csrf_token %}
+                File Number: <input type="number" name="file" value = {{filenumber}}><br>
+            </form>
+        </div>
+        <p style="float: left; width: 50%"><a href="#" onclick="document.getElementById('getfile').submit();return false;">Load File</a></p>
+
+        -->
+
+        <div style="padding-top: 15px" class="slidecontainer">
+            <p style="font-size: 20px;margin-left: 15px">Time: <span id="demo"></span></p>
+            <input type="range" min="0" max={{duration}} value={{current}} class="slider" id="myRange">
+            <p></p>
+            <p></p>
+        </div>
+        <script>
+                var slider = document.getElementById("myRange");
+                var output = document.getElementById("demo");
+                output.innerHTML = slider.value;
+
+                slider.oninput = function() {
+                  output.innerHTML = this.value;
+                  document.getElementById("form_time").value = this.value;
+                }
+        </script>
+
+
+        <!-- <p>current_time</p> -->
+    <label style="padding-left: 15px; font-size: 20px;"> Changing time slider</label>
+    <p align="left" style="padding-left: 25px; display: inline-block"><a href="#" onclick="document.getElementById('myform').submit();return false;">Load Time</a></p>
+    <p style="padding-left: 15px; display: inline-block" ><a href="{% url 'get_image' %}">Reset</a></p>
+
+
+    <br><br>
+    <div class="row">
+        <div class="column1" style="background-color:#fff;">
+            <h3 align="center">Minimap</h3><br>
+            <div><p align="center"> Image Time: {{ current }} </p></div>
+            <img align="center" width="100%" src="{% static "images/graph.png" %}" alt="graph"/>
+        </div>
+
+
+        <div class="column2" style="background-color:#fff; padding-left: 35px">
+            <h3 align="left">Statistics from the model</h3><br><br><br><br>
+            <h4 align="left" > Actual winner: {{ actual }} </h4>
+            <h4 align="left" > Predicted winner from current frame: {{ prediction }} </h4>
+            <h4 align="left" > Overall accuracy of current replay: {{ overall }} </h4>
+        </div>
+    </div>
+
+
+        <form id="myform" method="POST" action="{% url 'get_image' %}">
+            {% csrf_token %}
+            <input type="hidden" name="cur" value={{ current }} id="form_time"/>
+            <input type="hidden" name="file" value={{ filenumber }} id="form_time2"/>
+            <input type="hidden" name="flagupload" value={{ flagupload }} id="form_time3"/>
+        </form>
+    </div>
+    <!--
+        <h4 align="center"> Actual winner: {{ actual }} </h4>
+        <h4 align="center"> Predicted winner from current frame: {{ prediction }} </h4>
+        <h4 align="center"> Overall accuracy of current replay: {{ overall }} </h4>
+        <p align="center"><a href="#" onclick="document.getElementById('myform').submit();return false;">Load Time</a></p>
+        <p align="center"><a href="{% url 'get_image' %}">Reset</a></p>
+        <h3 align="center">Arena</h3>
+        <div><p align="center"> Image Time: {{ current }} </p></div>
+
+    <div style="text-align: center; justify-content: center;"></div>
+    -->
+    </body>
+</html>
