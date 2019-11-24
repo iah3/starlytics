@@ -1,4 +1,4 @@
-# Starlytics: Starcraft II Action and Winner Prediction Using a Web App
+# Starlytics: Starcraft II Action and Winner Prediction using a Web App
 
 Replays available at:
 ```
